@@ -1,3 +1,7 @@
+.devcontainer/
+.env.dev
 .git*
-**/*.pyc
 .venv/
+*.md
+**/*.pyc
+playground.ipynb

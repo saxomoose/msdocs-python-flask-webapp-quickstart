@@ -6,11 +6,10 @@ import logging
 
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
-if not app.debug:
-    stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.INFO)
-    app.logger.addHandler(stream_handler)
+# if not app.debug:
+#     stream_handler = logging.StreamHandler()
+#     stream_handler.setLevel(logging.INFO)
+#     app.logger.addHandler(stream_handler)
 
 @app.route('/catalog')
 def catalog():
