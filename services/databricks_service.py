@@ -19,15 +19,15 @@ class AzureIdentityCredentialsStrategy(CredentialsStrategy):
             mi_credential = ManagedIdentityCredential()
         
         def inner():
-            token = mi_credential.get_token("2ff814a6-3304-4ab8-85cb-cd0e6f879c1d/.default")
+            token = mi_credential.get_token(scopes="2ff814a6-3304-4ab8-85cb-cd0e6f879c1d/.default")
             return {'Authorization': f"Bearer {token.token}"}
         
         return inner
 
-def get_workspace_client(environment):
+def get_workspace_client():
     if not hasattr(get_workspace_client, "_workspace_client"):
-        host = os.getenv("DATABRICKS_HOST")
-        if environment == "prd":
+        host = os.getenv("DATABRICKS_HOST_LAB")
+        if os.getenv("ENVIRONMENT") == "prd":
             workspace_client = WorkspaceClient(
                 host=host, 
                 credentials_strategy=AzureIdentityCredentialsStrategy())
@@ -36,12 +36,11 @@ def get_workspace_client(environment):
             workspace_client = WorkspaceClient(
                 host=host,
                 client_id=os.getenv("DATABRICKS_CLIENT_ID"),
-                client_secret=os.getenv("DATABRICKS_CLIENT_SECRET")
-            )
+                client_secret=os.getenv("DATABRICKS_CLIENT_SECRET"))
             get_workspace_client._workspace_client = workspace_client
     
     return get_workspace_client._workspace_client
 
 def get_catalog():
-    workspace_client = get_workspace_client(os.getenv("ENVIRONMENT")) 
+    workspace_client = get_workspace_client() 
     return list(workspace_client.catalogs.list())[0].as_dict()

@@ -1,9 +1,11 @@
 import os
 
-from flask import Flask
-import databricks_service
+from flask import Flask, request, make_response, Blueprint
+from werkzeug.security import check_password_hash
 import logging
-
+import base64
+from  urllib.parse import urlparse
+from blueprints.verenigingsregister import blueprint_verenigingsregister
 
 app = Flask(__name__)
 # if not app.debug:
@@ -11,9 +13,7 @@ app = Flask(__name__)
 #     stream_handler.setLevel(logging.INFO)
 #     app.logger.addHandler(stream_handler)
 
-@app.route('/catalog')
-def catalog():
-   return databricks_service.get_catalog()
+app.register_blueprint(blueprint_verenigingsregister)
 
 if __name__ == '__main__':
    app.run()
