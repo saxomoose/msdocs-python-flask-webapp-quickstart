@@ -1,13 +1,8 @@
-import os
-
-from flask import Flask, request, make_response, Blueprint
-from werkzeug.security import check_password_hash
+from apiflask import APIFlask
 import logging
-import base64
-from  urllib.parse import urlparse
 from blueprints.verenigingsregister import blueprint_verenigingsregister
 
-app = Flask(__name__)
+app = APIFlask(__name__)
 # if not app.debug:
 #     stream_handler = logging.StreamHandler()
 #     stream_handler.setLevel(logging.INFO)

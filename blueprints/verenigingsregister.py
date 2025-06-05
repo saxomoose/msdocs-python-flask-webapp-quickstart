@@ -1,14 +1,14 @@
-from flask import abort, Blueprint, make_response, request, g
-from services import databricks_service, basic_auth_verenigingsregister
+from flask import make_response, request, g
+from apiflask import abort, APIBlueprint
+from services import databricks_service
 from werkzeug.security import check_password_hash
 import base64
 import os
-import os
 
-DQS_API_VERSION_URL = os.getenv("DQS_API_VERSION_URL")
+DQS_API_VERSION_URL = os.getenv('DQS_API_VERSION_URL')
 url_prefix_verenigingsregister = f"/api/{DQS_API_VERSION_URL}/verenigingsregister"
 
-blueprint_verenigingsregister = Blueprint(name='blueprint_verenigingsregister', import_name=__name__, url_prefix=url_prefix_verenigingsregister)
+blueprint_verenigingsregister = APIBlueprint(name='blueprint_verenigingsregister', import_name=__name__, url_prefix=url_prefix_verenigingsregister)
 
 # Security
 @blueprint_verenigingsregister.before_request
@@ -26,7 +26,7 @@ def authenticate_verenigingsregister():
    
 @blueprint_verenigingsregister.before_request
 def authorize_verenigingsregister():
-   if g.dqs_client['client_id'] != os.getenv(f"DQS_API_CLIENT_ID_VERENIGINGSREGISTER"):
+   if g.dqs_client['client_id'] != os.getenv('DQS_API_CLIENT_ID_VERENIGINGSREGISTER'):
       abort(403)
 
 # Routing
